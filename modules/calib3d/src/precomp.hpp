@@ -55,6 +55,7 @@ direct,
 #include "opencv2/core/utility.hpp"
 
 #include "opencv2/core/private.hpp"
+#include "opencv2/core/types.hpp"
 
 #include "opencv2/core/ocl.hpp"
 
@@ -66,10 +67,6 @@ direct,
 
 namespace cv {
 
-struct CV_EXPORTS RANSACStats {
-    int numIterations;
-    float confidence;
-};
 
 int RANSACUpdateNumIters(double p, double ep, int modelPoints, int maxIters);
 

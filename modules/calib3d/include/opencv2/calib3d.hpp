@@ -47,6 +47,7 @@
 #include "opencv2/core.hpp"
 #include "opencv2/features2d.hpp"
 #include "opencv2/core/affine.hpp"
+#include "opencv2/core/types.hpp"
 
 /**
   @defgroup calib3d Camera Calibration and 3D Reconstruction
@@ -1168,13 +1169,20 @@ stereoRectifyUncalibrated to compute the rectification transformation. :
 @endcode
  */
 CV_EXPORTS_W Mat findFundamentalMat( InputArray points1, InputArray points2,
-                                     int method = FM_RANSAC,
+                                     RANSACStats & stats, int method = FM_RANSAC,
                                      double param1 = 3., double param2 = 0.99,
                                      OutputArray mask = noArray() );
 
-/** @overload */
+CV_EXPORTS_W Mat findFundamentalMat( InputArray points1, InputArray points2,
+        int method = FM_RANSAC, double param1 = 3., double param2 = 0.99,
+                                     OutputArray mask = noArray() );
+
 CV_EXPORTS Mat findFundamentalMat( InputArray points1, InputArray points2,
                                    OutputArray mask, int method = FM_RANSAC,
+                                   double param1 = 3., double param2 = 0.99 );
+/** @overload */
+CV_EXPORTS Mat findFundamentalMat( InputArray points1, InputArray points2,
+             RANSACStats& stats, OutputArray mask, int method = FM_RANSAC,
                                    double param1 = 3., double param2 = 0.99 );
 
 /** @brief Calculates an essential matrix from the corresponding points in two images.

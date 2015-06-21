@@ -362,7 +362,7 @@ cv::Mat cv::findHomography(InputArray _points1, InputArray _points2, int method,
 
     Ptr<PointSetRegistrator::Callback> cb =
         makePtr<HomographyEstimatorCallback>();
-    RANSACStats stats;
+    cv::RANSACStats stats;
 
     if (method == 0 || npoints == 4) {
         tempMask = Mat::ones(npoints, 1, CV_8U);
@@ -702,7 +702,7 @@ class FMEstimatorCallback : public PointSetRegistrator::Callback {
 }
 
 cv::Mat cv::findFundamentalMat(InputArray _points1, InputArray _points2,
-                               int method, double param1, double param2,
+        cv::RANSACStats& stats, int method, double param1, double param2,
                                OutputArray _mask) {
     Mat points1 = _points1.getMat(), points2 = _points2.getMat();
     Mat m1, m2, F;
@@ -742,7 +742,6 @@ cv::Mat cv::findFundamentalMat(InputArray _points1, InputArray _points2,
     } else {
         if (param1 <= 0) param1 = 3;
         if (param2 < DBL_EPSILON || param2 > 1 - DBL_EPSILON) param2 = 0.99;
-        RANSACStats stats;
 
         if ((method & ~3) == FM_RANSAC && npoints >= 15)
             result = createRANSACPointSetRegistrator(cb, 7, param1, param2)
@@ -758,10 +757,23 @@ cv::Mat cv::findFundamentalMat(InputArray _points1, InputArray _points2,
 }
 
 cv::Mat cv::findFundamentalMat(InputArray _points1, InputArray _points2,
-                               OutputArray _mask, int method, double param1,
+        cv::RANSACStats& stats, OutputArray _mask, int method, double param1,
                                double param2) {
-    return cv::findFundamentalMat(_points1, _points2, method, param1, param2,
+    return cv::findFundamentalMat(_points1, _points2, stats, method, param1, param2,
                                   _mask);
+}
+
+cv::Mat cv::findFundamentalMat(InputArray _points1, InputArray _points2,
+            OutputArray _mask, int method, double param1, double param2) {
+    cv::RANSACStats stats;
+    return cv::findFundamentalMat(_points1, _points2, stats, method, param1, param2,
+                                  _mask);
+}
+
+cv::Mat cv::findFundamentalMat(InputArray _points1, InputArray _points2,
+            int method, double param1, double param2, OutputArray mask) {
+    cv::RANSACStats stats;
+    return cv::findFundamentalMat(_points1, _points2, stats, method, param1, param2, mask);
 }
 
 void cv::computeCorrespondEpilines(InputArray _points, int whichImage,

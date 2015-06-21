@@ -2172,6 +2172,11 @@ Scalar operator * (const Matx<double, 4, 4>& a, const Scalar& b)
 }
 
 
+typedef struct CV_EXPORTS RANSACStats {
+    int numIterations;
+    float confidence;
+} RANSACStats;
+
 
 //////////////////////////////// KeyPoint ///////////////////////////////
 

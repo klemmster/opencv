@@ -10,6 +10,7 @@
 #include <numpy/ndarrayobject.h>
 
 #include "pyopencv_generated_include.h"
+#include "opencv2/core/types.hpp"
 #include "opencv2/core/types_c.h"
 
 #include "opencv2/opencv_modules.hpp"
@@ -980,6 +981,14 @@ bool pyopencv_to(PyObject *obj, TermCriteria& dst, const char *name)
     return PyArg_ParseTuple(obj, "iid", &dst.type, &dst.maxCount, &dst.epsilon) > 0;
 }
 
+template<>
+bool pyopencv_to(PyObject *obj, cv::RANSACStats& dst, const char *name)
+{
+    (void)name;
+    if(!obj)
+        return true;
+    return PyArg_ParseTuple(obj, "if", &dst.numIterations, &dst.confidence) > 0;
+}
 template<>
 PyObject* pyopencv_from(const TermCriteria& src)
 {
